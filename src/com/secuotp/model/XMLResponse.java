@@ -5,13 +5,11 @@
  */
 package com.secuotp.model;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author zenology
  */
-public class XMLResponse extends XMLReqRes {
+public class XMLResponse {
 
     private int status;
     private String message;
