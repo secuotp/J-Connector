@@ -6,7 +6,7 @@
 
 package com.secuotp.xml;
 
-import com.secuotp.model.Parameter;
+import com.secuotp.model.XMLParameter;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultDocument;
@@ -28,7 +28,7 @@ public class XMLCreate {
      * @param userInfo User Info Parameter
      * @return The String of XML for Web Service    
      */
-    public static String createRequest(String service, Parameter siteAuthentication, Parameter userInfo){
+    public static String createRequest(String service, XMLParameter siteAuthentication, XMLParameter userInfo){
         Document doc = new DefaultDocument();
         Element rootNode = doc.addElement("secuotp");
         Element serviceNode = rootNode.addElement("service");
@@ -44,6 +44,30 @@ public class XMLCreate {
             String[] text = userInfo.pop();
             parameterNode.addElement(text[0]).addText(text[1]);
         }
+        
+        doc.normalize();
+        return doc.asXML();
+    }
+    
+    public static String createRequestServiceU02(String service, XMLParameter siteAuthentication, String endUserUsername, XMLParameter changeTagParam){
+        Document doc = new DefaultDocument();
+        Element rootNode = doc.addElement("secuotp");
+        Element serviceNode = rootNode.addElement("service");
+            serviceNode.addAttribute("sid", service);
+            serviceNode.addText(getServiceName(service));
+        Element authenticationNode = rootNode.addElement("authentication");
+        while(siteAuthentication.hasNext()){
+            String[] text = siteAuthentication.pop();
+            authenticationNode.addElement(text[0]).addText(text[1]);
+        }
+        Element parameterNode = rootNode.addElement("parameter");
+            parameterNode.addElement("username").setText(endUserUsername);
+        while(changeTagParam.hasNext()){
+            String[] text = changeTagParam.pop();
+            Element change = parameterNode.addElement("change");
+                change.addElement("param").setText(text[0]);
+                change.addElement("value").setText(text[1]);
+       }
         
         doc.normalize();
         return doc.asXML();

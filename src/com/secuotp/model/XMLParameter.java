@@ -11,13 +11,13 @@ import java.util.ArrayList;
  *
  * @author zenology
  */
-public class Parameter {
+public class XMLParameter {
 
     private ArrayList<String> keyList;
     private ArrayList<String> valueList;
     private int pointer = 0;
 
-    public Parameter() {
+    public XMLParameter() {
         keyList = new ArrayList<>();
         valueList = new ArrayList<>();
     }
