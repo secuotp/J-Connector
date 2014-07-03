@@ -34,11 +34,7 @@ class XMLParser {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             doc = builder.parse(new InputSource(new StringReader(xml)));
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -52,11 +48,15 @@ class XMLParser {
             return null;
         }
     }
-    
+
     public static String[] getChildData(NodeList nList, int numberItem) {
         String[] data = new String[2];
-        data[0] = nList.item(numberItem).getNodeName();
-        data[1] = nList.item(numberItem).getTextContent();
+        Node n = nList.item(0).getFirstChild();
+        for (int i = 0; i < numberItem; i++) {
+            n = n.getNextSibling();
+        }
+        data[0] = n.getNodeName();
+        data[1] = n.getTextContent();
         return data;
     }
 
@@ -78,6 +78,9 @@ class XMLParser {
     public int getChildItem(String tagName, int numberItem) {
         list = doc.getElementsByTagName(tagName);
         e = (Element) list.item(numberItem);
+        if (e == null) {
+            return 0;
+        }
         return e.getChildNodes().getLength();
     }
 

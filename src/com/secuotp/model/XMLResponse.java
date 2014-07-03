@@ -16,6 +16,7 @@ public class XMLResponse {
     private XMLParameter parameter;
 
     public XMLResponse(String xml) {
+        parameter = new XMLParameter();
         XMLParser parse = new XMLParser(xml);
         status = Integer.parseInt(parse.getAttibuteFromTag("secuotp", "status", 0));
         message = parse.getDataFromTag("message", 0);
