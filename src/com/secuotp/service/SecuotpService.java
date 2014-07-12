@@ -5,23 +5,41 @@
  */
 package com.secuotp.service;
 
-import com.secuotp.model.XMLParameter;
 import com.secuotp.model.XMLRequest;
 import com.secuotp.model.XMLResponse;
-import com.secuotp.model.XMLTag;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.representation.Form;
-import java.util.ArrayList;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * 
  * @author zenology
  */
 public class SecuotpService {
-
+    /**
+     * Send the parameter to SecuOTP Web Service and get the {@link XMLResponse} from the Web Service <br/>
+     * <pre>
+     * Example:
+     * {@code
+     *  XMLRequest request = new XMLRequest();
+     *  request.setSid("U-01");
+     *  request.setDomainName("https://secuotp.sit.kmutt.ac.th");
+     *  request.setSerialNumber("XXXXX-XXXXX-XXXXX-XXXXX");
+     *  request.addChildTag("username", "XX");
+     *  request.addChildTag("type", "default");
+     * 
+     * XMLResponse response = SecuotpService.sendResponse(request, RequestURL.U_01, "PUT");
+     * }
+     * </pre>
+     * @param request The Request Parameter required for Web Service
+     * @param serviceUrl The URL of Web Service
+     * @param method The String of HTTP Method (ex.POST, GET, PUT, DELETE)
+     * @return The Response of the Web Service
+     * 
+     * @see RequestURL
+     */
     public static XMLResponse sendResponse(XMLRequest request, String serviceUrl, String method) {
         Client c = new Client();
 
@@ -45,6 +63,34 @@ public class SecuotpService {
         return null;
     }
 
+    /**
+     * Send the parameter to SecuOTP Web Service and get the {@link XMLResponse} from the Web Service <br/>
+     * <pre>
+     * Example:
+     * {@code
+     *  String xml = "
+     *      <secuotp>
+     *          <service sid="U-01">Get End-User Data</service?
+     *          <authentication>
+     *              <domain>https://secuotp.sit.kmutt.ac.th</domain>
+     *              <serial>XXXXX-XXXXX-XXXXX-XXXXX</serial>
+     *          </authentication>
+     *          <parameter>
+     *              <username>XX</username>
+     *              <type>default</type>
+     *          </parameter>
+     *      </secuotp>
+     *  ";
+     * XMLResponse response = SecuotpService.sendResponse(xml, RequestURL.U_01, "PUT");
+     * }
+     * </pre>
+     * @param request The Request xml String required for Web Service
+     * @param serviceUrl The URL of Web Service
+     * @param method The String of HTTP Method (ex.POST, GET, PUT, DELETE)
+     * @return The Response of the Web Service
+     * 
+     * @see RequestURL
+     */
     public static XMLResponse sendResponse(String request, String serviceUrl, String method) {
         Client c = new Client();
 
@@ -67,24 +113,4 @@ public class SecuotpService {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        XMLRequest req = new XMLRequest();
-        req.setSid("U-01");
-        req.setDomainName("http://sit.kmutt.ac.th");
-        req.setSerialNumber("2J2FC-A3ZC5-44DQH-VTE5H");
-        req.setParamTag(new ArrayList<XMLTag>());
-        req.addChildTag("username", "Alpaca");
-        XMLTag changeTag = req.addChildTag("change");
-        changeTag.addChildTag("param", "email");
-        changeTag.addChildTag("value", "alpaca@zoo.com");
-
-        XMLResponse response = sendResponse(req, "http://secuotp.sit.kmutt.ac.th/SecuOTP-Service/user/end-user", "PUT");
-        XMLParameter param = response.getParameter();
-        while (param.hasNext()) {
-            String[] a = param.pop();
-            System.out.println(a[0] + "\t" + a[1]);
-        }
-    }
-
 }
