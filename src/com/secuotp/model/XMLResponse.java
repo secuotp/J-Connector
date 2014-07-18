@@ -5,8 +5,6 @@
  */
 package com.secuotp.model;
 
-import com.parser.XMLParser;
-
 /**
  *
  * @author zenology
