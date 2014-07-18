@@ -14,16 +14,25 @@ import org.dom4j.tree.DefaultDocument;
  *
  * @author zenology
  */
-public class XMLRequest extends XMLReqRes {
+public class XMLRequest {
+    private String serviceId;
     private String domainName;
     private String serialNumber;
     private ArrayList<XMLTag> paramTag;
 
     public XMLRequest() {
-        this.setSid("");
+        this.setServiceId("");
         domainName = "";
         serialNumber = "";
         paramTag = new ArrayList<>();
+    }
+    
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
     }
 
     public ArrayList<XMLTag> getParamTag() {
@@ -79,8 +88,8 @@ public class XMLRequest extends XMLReqRes {
         Document doc = new DefaultDocument();
         Element root = doc.addElement("secuotp");
         Element serviceNode = root.addElement("service");
-        serviceNode.addAttribute("sid", getSid());
-        serviceNode.setText(StringText.getServiceName(getSid()));
+        serviceNode.addAttribute("sid", getServiceId());
+        serviceNode.setText(StringText.getServiceName(getServiceId()));
         Element authenNode = root.addElement("authentication");
         authenNode.addElement("domain").setText(domainName);
         authenNode.addElement("serial").setText(serialNumber);

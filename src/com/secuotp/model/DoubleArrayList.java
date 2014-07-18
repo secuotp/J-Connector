@@ -12,12 +12,12 @@ import java.util.ArrayList;
  * @author Panasan Sinroungorng
  * 
  */
-public class XMLParameter {
+public class DoubleArrayList {
     private ArrayList<String> keyList;
     private ArrayList<String> valueList;
     private int pointer = 0;
 
-    public XMLParameter() {
+    public DoubleArrayList() {
         keyList = new ArrayList<>();
         valueList = new ArrayList<>();
     }
@@ -103,6 +103,10 @@ public class XMLParameter {
             }
         }
         return null;
+    }
+    
+    public int size(){
+        return keyList.size();
     }
     
     /**
