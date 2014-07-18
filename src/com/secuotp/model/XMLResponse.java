@@ -13,10 +13,10 @@ public class XMLResponse {
 
     private int status;
     private String message;
-    private XMLParameter parameter;
+    private DoubleArrayList parameter;
 
     public XMLResponse(String xml) {
-        parameter = new XMLParameter();
+        parameter = new DoubleArrayList();
         XMLParser parse = new XMLParser(xml);
         status = Integer.parseInt(parse.getAttibuteFromTag("secuotp", "status", 0));
         message = parse.getDataFromTag("message", 0);
@@ -44,11 +44,11 @@ public class XMLResponse {
     }
 
     
-    public XMLParameter getParameter() {
+    public DoubleArrayList getParameter() {
         return parameter;
     }
 
-    public void setParameter(XMLParameter parameter) {
+    public void setParameter(DoubleArrayList parameter) {
         this.parameter = parameter;
     }
 
