@@ -11,6 +11,7 @@ package com.secuotp.model;
  */
 public class XMLResponse {
 
+    
     private int status;
     private String message;
     private DoubleArrayList parameter;
