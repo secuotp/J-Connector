@@ -6,9 +6,6 @@
 package com.secuotp.model;
 
 import java.util.ArrayList;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.tree.DefaultDocument;
 
 /**
  *
@@ -18,6 +15,7 @@ public class XMLRequest {
     private String serviceId;
     private String domainName;
     private String serialNumber;
+    private int pointer = 0;
     private ArrayList<XMLTag> paramTag;
 
     public XMLRequest() {
@@ -72,33 +70,58 @@ public class XMLRequest {
         return paramTag.get(paramTag.size() - 1);
     }
 
-    private void setParameter(Element parentNode, XMLTag tag) {
-        Element e = parentNode.addElement(tag.getTagName());
+    private String setParameter(XMLTag tag) {
         if (tag.haveChildNode()) {
-            for (int i = 0; i < tag.getChildNode().size(); i++) {
-                setParameter(e, tag.getChildNode().get(i));
+            ArrayList item = tag.getChildNode();
+            String subTag1 = "<" + tag.getTagName() + ">";
+            String values = "";
+            for (int i = 0; i < tag.getChildNode().size(); i++)
+            {
+                try
+                {
+                    XMLTag item2 = (XMLTag) item.get(i);
+                    pointer++;
+                    values = values + setParameter(item2);
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    System.out.println(e);
+                }
             }
+            String subTag2 = "</" + tag.getTagName() + ">";
+            return subTag1 + values + subTag2;
         } else {
-            e.setText(tag.getValue());
+            return "<" + tag.getTagName() + ">" + tag.getValue() + "</" + tag.getTagName() + ">";
         }
     }
 
     @Override
     public String toString() {
-        Document doc = new DefaultDocument();
-        Element root = doc.addElement("secuotp");
-        Element serviceNode = root.addElement("service");
-        serviceNode.addAttribute("sid", getServiceId());
-        serviceNode.setText(StringText.getServiceName(getServiceId()));
-        Element authenNode = root.addElement("authentication");
-        authenNode.addElement("domain").setText(domainName);
-        authenNode.addElement("serial").setText(serialNumber);
-        Element paramNode = root.addElement("parameter");
-        for (int i = 0; i < this.paramTag.size(); i++) {
-            setParameter(paramNode, this.paramTag.get(i));
-        }
-        doc.normalize();
-        return doc.asXML();
+        String xml = "<?xml version=\"1.0\"?>"+"<secuotp>"
+                +"<service sid=\""+getServiceId()+"\">"+StringText.getServiceName(getServiceId())+"</service>"
+                +"<authentication>"+"<domain>"+domainName+"</domain>"
+                +"<serial>"+serialNumber+"</serial>"+"</authentication>"+
+                "<parameter>";
+
+            String param = "";
+
+            for (int i = 0; i < this.paramTag.size(); i++) {
+                try
+                {
+                    pointer++;
+                    XMLTag tag = (XMLTag) paramTag.get(i);
+                    param = param + setParameter(tag);
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    System.out.println(e);
+                }
+            }
+
+            String buttomXml = "</parameter></secuotp>";
+            String combine = xml + param + buttomXml;
+            
+            return combine;
     }
 
 }
