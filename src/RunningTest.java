@@ -4,9 +4,9 @@
  */
 
 
+import com.secuotp.model.XMLParam;
 import com.secuotp.model.XMLRequest;
 import com.secuotp.model.XMLResponse;
-import com.secuotp.service.RequestURL;
 import com.secuotp.service.Service;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ class TrustAllX509TrustManager implements X509TrustManager {
 
 }
 
-public class test {
+public class RunningTest {
     public static void main(String[] args) throws Exception{
         SSLContext sc = SSLContext.getInstance("TLS");
         sc.init(null, new TrustManager[] { new TrustAllX509TrustManager() }, new java.security.SecureRandom());
@@ -52,16 +52,16 @@ public class test {
         });
         
         XMLRequest req = new XMLRequest();
-        req.setServiceId("U-01");
-        req.setDomainName("p");
-        req.setSerialNumber("NS65P-MG115-KU09A-GZXMM");
+        req.setService(XMLParam.G01);
+        req.setDomainName("http://secuotp-test.com");
+        req.setSerialNumber("MD344-SS124-4J32R-QV4JU");
         req.setParamTag(new ArrayList());
-        req.addChildTag("username", "polwath");
-        req.addChildTag("type", "default");
+        req.addChildTag("username", "zenology");
+        
         
         XMLResponse result = Service.sendPOST(req, 
-                "https://secure.secuotp.co.th/SecuOTP-Service/user/end-user");
-        
+                "https://secuotp.co.th/SecuOTP-Service/otp/generate");
+   
         System.out.println(req.toString());
         System.out.println(result.getStatus()+" - "+result.getMessage());
         

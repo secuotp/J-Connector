@@ -12,26 +12,27 @@ import java.util.ArrayList;
  * @author zenology
  */
 public class XMLRequest {
-    private String serviceId;
+    private String[] service;
     private String domainName;
     private String serialNumber;
     private int pointer = 0;
     private ArrayList<XMLTag> paramTag;
 
     public XMLRequest() {
-        this.setServiceId("");
+        this.setService(null);
         domainName = "";
         serialNumber = "";
         paramTag = new ArrayList<>();
     }
-    
-    public String getServiceId() {
-        return serviceId;
+
+    public String[] getService() {
+        return service;
     }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
+    public void setService(String[] service) {
+        this.service = service;
     }
+    
 
     public ArrayList<XMLTag> getParamTag() {
         return paramTag;
@@ -98,7 +99,7 @@ public class XMLRequest {
     @Override
     public String toString() {
         String xml = "<?xml version=\"1.0\"?>"+"<secuotp>"
-                +"<service sid=\""+getServiceId()+"\">"+StringText.getServiceName(getServiceId())+"</service>"
+                +"<service sid=\""+service[0]+"\">"+service[1]+"</service>"
                 +"<authentication>"+"<domain>"+domainName+"</domain>"
                 +"<serial>"+serialNumber+"</serial>"+"</authentication>"+
                 "<parameter>";
