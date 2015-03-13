@@ -59,7 +59,7 @@ public class SecuOTPService {
         this.serialNumber = serialNumber;
     }
 
-    public int registerEndUser(String username, String email, String firstName, String lastName, String phone) {
+    public ServiceStatus registerEndUser(String username, String email, String firstName, String lastName, String phone) {
         XMLRequest req = new XMLRequest();
         req.setService(XMLParam.M01);
         req.setDomainName(this.domain);
@@ -72,10 +72,13 @@ public class SecuOTPService {
         req.addChildTag("phone", phone);
 
         XMLResponse result = Service.sendPOST(req, SITE_NAME + "manage/register/end-user");
-        return result.getStatus();
+        if(result != null){
+            return new ServiceStatus(result.getStatus(), result.getMessage());
+        }
+        return null;
     }
     
-    public int disableEndUser(String username, String removalCode) {
+    public ServiceStatus disableEndUser(String username, String removalCode) {
         XMLRequest req = new XMLRequest();
         req.setService(XMLParam.M02);
         req.setDomainName(this.domain);
@@ -86,10 +89,13 @@ public class SecuOTPService {
         
 
         XMLResponse result = Service.sendPOST(req, SITE_NAME + "manage/disable/end-user");
-        return result.getStatus();
+        if(result != null){
+            return new ServiceStatus(result.getStatus(), result.getMessage());
+        }
+        return null;
     }
     
-    public int generateOneTimePassword(String username) {
+    public ServiceStatus generateOneTimePassword(String username) {
         XMLRequest req = new XMLRequest();
         req.setService(XMLParam.G01);
         req.setDomainName(this.domain);
@@ -99,7 +105,27 @@ public class SecuOTPService {
         
 
         XMLResponse result = Service.sendPOST(req, SITE_NAME + "otp/generate");
-        return result.getStatus();
+        if(result != null){
+            return new ServiceStatus(result.getStatus(), result.getMessage());
+        }
+        return null;
+    }
+    
+    public ServiceStatus authenticateOneTimePassword(String username, String otp) {
+        XMLRequest req = new XMLRequest();
+        req.setService(XMLParam.A01);
+        req.setDomainName(this.domain);
+        req.setSerialNumber(this.serialNumber);
+        req.setParamTag(new ArrayList());
+        req.addChildTag("username", username);
+        req.addChildTag("password", otp);
+        
+
+        XMLResponse result = Service.sendPOST(req, SITE_NAME + "otp/authenticate");
+        if(result != null){
+            return new ServiceStatus(result.getStatus(), result.getMessage());
+        }
+        return null;
     }
 }
 
