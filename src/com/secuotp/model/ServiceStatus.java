@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.secuotp.service;
+package com.secuotp.model;
 
 /**
  *
@@ -12,6 +12,7 @@ package com.secuotp.service;
 public class ServiceStatus {
     private int statusId;
     private String statusText;
+    private Object data;
 
     public ServiceStatus(int statusId, String statusText) {
         this.statusId = statusId;
@@ -32,6 +33,14 @@ public class ServiceStatus {
 
     public void setStatusText(String statusText) {
         this.statusText = statusText;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
     
     
