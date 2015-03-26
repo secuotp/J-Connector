@@ -15,6 +15,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String phone;
+    private String removalCode;
+    private String serialNumber;
 
     public String getUsername() {
         return username;
@@ -55,6 +57,21 @@ public class User {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
+
+    public String getRemovalCode() {
+        return removalCode;
+    }
+
+    public void setRemovalCode(String removalCode) {
+        this.removalCode = removalCode;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
     
 }

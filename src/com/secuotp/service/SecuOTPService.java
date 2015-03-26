@@ -154,6 +154,10 @@ public class SecuOTPService {
         u.setFirstName(list.getValue("fname"));
         u.setLastName(list.getValue("lname"));
         u.setPhone(list.getValue("phone"));
+        if(type == 1) {
+            u.setRemovalCode(list.getValue("removal"));
+            u.setSerialNumber(list.getValue("serial"));
+        }
 
         ServiceStatus status = new ServiceStatus(response.getStatus(), response.getMessage());
         status.setData(u);
