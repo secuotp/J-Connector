@@ -154,7 +154,7 @@ public class SecuOTPService {
         u.setFirstName(list.getValue("fname"));
         u.setLastName(list.getValue("lname"));
         u.setPhone(list.getValue("phone"));
-        if(type == 1) {
+        if (type == 1) {
             u.setRemovalCode(list.getValue("removal"));
             u.setSerialNumber(list.getValue("serial"));
         }
@@ -163,6 +163,21 @@ public class SecuOTPService {
         status.setData(u);
 
         return status;
+    }
+
+    // channel == 0 is sms, 1 is mobile
+
+    public String sendMigrationRequest(String username) {
+        XMLRequest req = new XMLRequest();
+        req.setService(XMLParam.O01);
+        req.setDomainName(this.domain);
+        req.setSerialNumber(this.serialNumber);
+        req.addChildTag("username", username);
+        
+        XMLResponse response = Service.sendPOST(req, SITE_NAME + "otp/migrate");
+        DoubleArrayList list = response.getParameter();
+        
+        return list.getValue("migration-code");
     }
 }
 
